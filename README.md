@@ -268,3 +268,55 @@ console.log(typeof null);            // Output: "object" (historical bug)
 const arr = [1,2,3,4];
 console.log(typeof arr)              //object
 ```
+
+# Arrays:
+
+Array is a data structure that stores a list of elements. These elements can be of any data type (such as numbers, strings, objects, or even other arrays). Arrays in JavaScript are indexed starting from zero and allow you to store and manipulate multiple values in a single variable.
+
+# Functions:
+
+A function is a block of code that performs a specific task or calculates a value. Functions are reusable pieces of code that can be defined once and called (executed) multiple times.
+
+- To use function we need to invoke it.
+- It's good to use a function with parameters instead of creating a new function when you want to reuse the same block of code to do similar tasks but with different inputs.
+- All the functions are returning undefined by default.
+- Any code which is written after the return statement will be ignored by JS.
+```
+function hello(){
+  return "Hello World";
+  console.log("Something") //ignored
+  console.log("Something") //ignored
+}
+```
+
+# Difference Between Parameter and Argument
+
+Parameters are local variables or placeholders that can be used only in the function body not outside
+
+- The value we pass while declaring a function is --> Parameter
+- The value we pass while invoking a function is --> Argument
+
+# Difference Between Function Definition and Function Expression :
+- function keyword followed by the function name and a block of code.
+- Can be declared anywhere in the code (hoisted), meaning you can call the function before its definition in the code.
+
+```
+function hello(){
+  //some code here...
+}
+```
+- Defined by assigning a function to a variable using either the function keyword or the arrow (=>) syntax.
+- Must be defined before they are called; otherwise, you'll get an error.
+
+Example using function keyword: 
+```
+const greet = function(){
+  //some code here...
+}
+```
+Example using arrow function (ES6):
+```
+const greet = () => {
+  //some code here...
+}
+```
