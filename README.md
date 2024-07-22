@@ -273,6 +273,10 @@ console.log(typeof arr)              //object
 
 Array is a data structure that stores a list of elements. These elements can be of any data type (such as numbers, strings, objects, or even other arrays). Arrays in JavaScript are indexed starting from zero and allow you to store and manipulate multiple values in a single variable.
 
+```
+const everything = ['a', "apple", 30, [1,3,5], true]
+```
+
 # Functions:
 
 A function is a block of code that performs a specific task or calculates a value. Functions are reusable pieces of code that can be defined once and called (executed) multiple times.
@@ -281,6 +285,7 @@ A function is a block of code that performs a specific task or calculates a valu
 - It's good to use a function with parameters instead of creating a new function when you want to reuse the same block of code to do similar tasks but with different inputs.
 - All the functions are returning undefined by default.
 - Any code which is written after the return statement will be ignored by JS.
+
 ```
 function hello(){
   return "Hello World";
@@ -293,11 +298,22 @@ function hello(){
 
 Parameters are local variables or placeholders that can be used only in the function body not outside
 
-- The value we pass while declaring a function is --> Parameter
-- The value we pass while invoking a function is --> Argument
+- The value we pass while declaring a function is Parameter.
+- The value we pass while invoking a function is Argument.
 
-# Difference Between Function Definition and Function Expression :
-- function keyword followed by the function name and a block of code.
+```
+funtion hello(name){ // name is parameter
+  console.log("Hello I am " + name);
+}
+
+hello("Susan") // Susan is argument
+
+```
+
+
+# Difference Between Function Declaration and Function Expression :
+
+- The `function` keyword followed by the function name and a block of code is called Function Declaration.
 - Can be declared anywhere in the code (hoisted), meaning you can call the function before its definition in the code.
 
 ```
@@ -305,18 +321,135 @@ function hello(){
   //some code here...
 }
 ```
-- Defined by assigning a function to a variable using either the function keyword or the arrow (=>) syntax.
+
+- Assigning a function to a variable using either the function keyword or the arrow (=>) syntax is called function expression.
 - Must be defined before they are called; otherwise, you'll get an error.
 
-Example using function keyword: 
+
 ```
 const greet = function(){
   //some code here...
 }
-```
-Example using arrow function (ES6):
-```
+
+or 
+
 const greet = () => {
   //some code here...
+}
+```
+
+# Objects:
+
+An object is a fundamental data type that allows you to store collections of key-value pairs.
+
+- If the property of an object was a function then it is called as method.
+- For using the object properties or invoking the methods we can use :
+
+  - dot notation.
+
+  ```
+  const person = {
+    name: "Sana",
+    greeting: function(){
+      console.log("Hello my name is " + this.name);
+    },
+    greeting2(){ //ES6 Syntax for methods :
+      console.log("Hey my name is " + this.name);
+    }
+  }
+
+    console.log(person.name); //dot notation
+    person.greeting(); //dot notation
+
+  ```
+
+  - Bracket Notation
+
+  ```
+  const person = {
+    name: "Sana",
+    greeting: function(){
+      console.log("Hello my name is " + this.name);
+    }
+  }
+
+    console.log(person["name"]); //bracket notation
+    person['greeting']() //bracket notation
+  ```
+
+# Conditional Statements
+
+Conditional statements in JavaScript are used to make decisions in your code based on certain conditions. They allow your program to execute different blocks of code depending on whether a condition is true or false.
+
+- if Statement
+- if...else Statement
+- if...else if...else Statement
+- Switch Statement
+  <br><br>
+
+# Comparison Operators :
+
+- `>`, `<`
+- `>=`, `<=`
+- `!=`, `!==`
+- `==`(checks only value), `===`(checks value and type)
+
+# if(!value) and if(value)
+
+In JS `if(!value)` means if the value was falsy it will run the if block and it will accept the `false` as an acceptable condition.
+<br>
+The `if(value)` means if the value was truthy then the if block will run.
+
+In JavaScript, the following values are considered "falsy" and the rest are considered as truthy:
+
+- `false` (boolean false)
+- `0` (number zero)
+- `''` or `""` (empty string)
+- `null`
+- `undefined`
+- `NaN` (Not a Number)
+
+```
+As the value is an empty string JS will take it as a fals value and then the if block will be executed:
+
+let value = "";
+if(!value){
+  console.log('If is running')
+}else{
+  console.log("Else is running")
+}
+
+Output : If is running
+```
+
+# Loops :
+
+Loops in JavaScript are used to repeatedly execute a block of code as long as a specified condition is true.
+
+- while loops : first checking if the condition was true then running the code block.
+
+```
+let amount = 10;
+while(amount > 0){
+  console.log("I am having "+ amount + "$");
+  amount--;
+}
+```
+
+- do while loops : It runs the code block one time and then checking if the condition was true.
+
+```
+let amount = 12;
+do {
+  console.log("You earned " + amount + " dollars");
+  amount++;
+} while (amount < 10);
+```
+
+- for loops : It executes the block of code as long as the condition is true.
+
+```
+for (let i = 0; i < 5; i++) {
+    console.log(i);
 }
 ```
