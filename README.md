@@ -377,6 +377,22 @@ An object is a fundamental data type that allows you to store collections of key
     person['greeting']() //bracket notation
   ```
 
+**Note** : 
+Functions can accept parameters and the parameter can be even an object :
+<br><br>
+In the example even though the object's properties are passed in reverse order (lastName before firstName), the function correctly constructs the full name as "Peter Helen" and converts it to uppercase.
+```
+function Name({ firstName, lastName }) {
+    let fullName = `${firstName} ${lastName}`;
+    return fullName.toUpperCase();
+}
+
+console.log(Name({ lastName: "Helen", firstName: "Peter" })); 
+
+Output : PETER HELEN
+```
+
+
 # Conditional Statements
 
 Conditional statements in JavaScript are used to make decisions in your code based on certain conditions. They allow your program to execute different blocks of code depending on whether a condition is true or false.
@@ -403,8 +419,8 @@ The `if(value)` means if the value was truthy then the if block will run.
 In JavaScript, the following values are considered "falsy" and the rest are considered as truthy:
 
 - `false` (boolean false)
-- `0` (number zero)
-- `''` or `""` (empty string)
+- `0` and `-0` (number zero)
+- `''` , `""` or (``) (empty strings)
 - `null`
 - `undefined`
 - `NaN` (Not a Number)
@@ -453,3 +469,167 @@ for (let i = 0; i < 5; i++) {
     console.log(i);
 }
 ```
+
+# String methods :
+```
+let name = "  Sana Tameem ";
+
+console.log(name); //   Sana Tameem 
+
+console.log(name.length); //14
+
+console.log(name.toLowerCase()); //  sana tameem
+
+console.log(name.toUpperCase()); //  SANA TAMEEM
+
+console.log(name.charAt(3)); //a
+
+console.log(name.indexOf('T')); //7
+
+console.log(name.trim()); //Sana Tameem
+
+console.log(name.includes('eem')); //true
+
+console.log(name.startsWith('  Sana')); //true
+
+console.log(name.trim().toLowerCase().startsWith('sana')); //true
+
+console.log(name.slice(0,3));//(  S) --> start from zero 3 not included
+
+console.log(name.slice(-3)); //(em ) --> last three letters of the string
+```
+
+# Template Literals:
+Template literals, introduced in ECMAScript 6 (ES6), are a way to create strings in JavaScript that allows for embedded expressions and multi-line strings. They are enclosed by backticks (``) instead of single quotes ('') or double quotes ("").
+
+**Interpolation** :
+ To insert an expression in backticks we use ${}
+ ```
+let name = 'John';
+let age = 30;
+
+let message = `Hello, my name is ${name} and I am ${age} years old.`;
+ ```
+
+# Array Mthods and properties:
+**Properties : ** 
+- length
+- concat()
+- reverse()
+```
+let arr = [1,2,3,4,5,6,7];
+let arr2 = [8,9,0];
+
+console.log(arr.length); //7
+
+console.log(arr.concat(arr2)); //[1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
+
+console.log(arr.reverse()); //[7, 6, 5, 4, 3, 2, 1]
+```
+**Methods : **
+```
+let arr = [1,2,3,4,5,6,7];
+console.log(arr); // [1, 2, 3, 4, 5, 6, 7]
+
+removedItem = arr.splice(2,2)//mutates the original array - first argument is from which index it should start, second value is saying how many items it should remove
+
+console.log(removedItem); //[3, 4]
+console.log(arr); //[ 1, 2, 5, 6, 7 ]
+
+arr.unshift(12);//Adding at the first
+console.log(arr); //[ 12, 1, 2, 5, 6, 7 ]
+
+console.log(arr.shift()); //1 --> removing and returning the first value of array
+console.log(arr); //[ 1, 2, 5, 6, 7 ]
+
+arr.push(30); //adds to the end of array
+console.log(arr) //[ 1, 2, 5, 6, 7, 30 ]
+
+arr.pop(); //removes from the last
+console.log(arr) //[ 1, 2, 5, 6, 7 ]
+```
+
+# Value vs Reference
+- If we are assigning a primitiv data type value to another variable even if we change the value its original value will not be changed.
+```
+const number = 2;
+let number2 = number;
+number2 = 4;
+
+console.log(`The first value is : ${number}`); //The first value is : 2
+console.log(`The second value is : ${number2}`); //The second value is : 4
+```
+
+- If we are assigning a non-primitiv data type to another variable and we change the value; its original value will also be changed because it is changine the reference. 
+```
+const person = {name: "Sana"}
+let person2 = person;
+person2.name = "Anna";
+
+console.log(`The first person is : ${person.name}`); // The first person is : Anna
+console.log(`The second person is : ${person2.name}`); // The second person is : Anna
+```
+
+- The solution for the above problem is using the spread operator. Spread operator will not change the value of the reference.
+```
+const person3 = {name: "Sana"}
+let person4 = {...person};
+person4.name = "Susy";
+
+console.log(`The first person is : ${person3.name}`); // The first person is : Sana
+console.log(`The second person is : ${person4.name}`); // The second person is : Susy
+```
+
+# Undefined vs Null
+- `undefined` represents a variable that has been declared but not initialized, or an object property that does not exist.
+- `null` represents an intentional absence of any object value.
+let num = 20 + null; 
+console.log(num); //20
+let num2 = 20 + undefined;
+console.log(num2); //Nan
+
+# Using return to Control Function Execution:
+
+The return statement in JavaScript serves two primary purposes: 
+<br><br>
+- Specifies the value a function should return
+- Acts as a mechanism to immediately stop the function's execution and exit.
+```
+let food = [56, 200, 1300];
+let gas = [67,1,5];
+
+function calculate(arr){
+  let total = 0;
+  for(let i = 0; i < arr.length; i++){
+    total += arr[i];
+  }
+  if(total>100){
+    console.log("Woa!!!!! You are spending too much");
+    return total; // stops the function here only and the function well not print the next clg and next return;
+  }
+  console.log("You are good at spending");
+  return total;
+}
+
+console.log(calculate(food)); //Woa!!!!! You are spending too much // 1556
+console.log(calculate(gas)); //You are good at spending //73
+console.log(calculate([20+40+500])); //Woa!!!!! You are spending too much //560
+```
+
+# Unary, Binary and Ternary Operators :
+- Unary Operator : Unary operators work with one operand like `typeof`.
+```
+console.log(typeof "Sana");
+```
+- Binary Operator : Binary operators work with two operands like addition.
+```
+console.log(3 + 5)
+```
+- Ternary Operator: The ternary operator (?:) is the only ternary operator in JavaScript. It works with three operands and is used as a shorthand for if...else statements.
+```
+condition ? run if condition is true : run if condition is false
+
+const value = 2>1;
+value ? console.log("Truthy") : console.log("Falsy") //Truthy
+```
+
