@@ -198,8 +198,8 @@ JavaScript tries to convert the strings to numbers because subtraction (-) is an
 
 const value = '10' - '23' // Output: -13
 
-'Anna' can't be converted to the number 10.
-'na' can't be converted to the number 23.
+'Anna' can't be converted to the number.
+'na' can't be converted to the number.
 
 const value = "Anna" - "na" // Output:  NaN
 ```
@@ -633,3 +633,86 @@ const value = 2>1;
 value ? console.log("Truthy") : console.log("Falsy") //Truthy
 ```
 
+# Global Scope vs Local Scope:
+Any variable outside the block {} is in the global scope and can be accessed anywhere in the program.
+```
+// Here we are accessing and modifying a global scope variable in the local scope:
+
+let name = "John";
+
+function calc(){
+  name = "Susy";
+  console.log(`My name is ${name}`);
+}
+
+calc();
+console.log(name);
+```
+
+Any variable inside block {} is in the local scope and can't be accessed outside the {} block.
+```
+function calc(){
+  let age = 34;
+}
+
+calc();
+console.log(age) //Error because the age is located in local scope.
+```
+
+**Note:** If we don't use let or const keywords for creating variable, JS will create it in global scope.
+```
+//Even the variable is inside the function and we should not be able to access it; but we can access it because of the absence of the let or const keywords:
+
+
+function calc(){
+  name = "Marwa"
+}
+
+calc();
+console.log(name); //Marwa
+```
+
+# Variable Lookup:
+Variable lookup in JavaScript is the process of searching for a variable in the closest scope and moves outward until it finds the variable.
+```
+const globalVar = 10;
+
+// it is checking if in the local scope we had globalVar variable it is taking its value but if in local scope it was not existing then it is taking the value of the varibale from the global scope:
+
+function calc(num1, num2){
+  const globalVar = 25;
+  return num1 + num2 + globalVar; 
+}
+
+console.log(calc(3,2)); //30
+```
+
+
+# Higher Order Functions, Callback Functions:
+Functions are first class objects. It means they can be stored in a variable (expression), passed as an argument to another function, or can be returned from the function (closure).
+
+- When a function is accepting another function as argument or returns another functions as a result , it is called `higher order function`.
+- The function that we pass it to other function as argument is called `callback function`.
+```
+//morning and afternoon are callback functions as they are passed to other function as argument:
+
+function morning(name){
+  return `Good Morning ${name.toUpperCase()}!!!!`;
+}
+
+function afternoon(name){
+  return `Good Afternoon ${name.repeat(4)}!!!` //repeating a text 4 times
+}
+
+function greet(name, callback){
+  let myName = "Sana";
+  console.log(`${callback(name)}, I am ${myName}`);
+}
+
+//greet is higher order function which accepts another function as argument :
+
+greet("Umo",morning); //Good Morning UMO!!!!, I am Sana
+
+//here we should never envoke the callback function using ():
+greet("Maro",afternoon); //Good Afternoon MaroMaroMaroMaro!!!, I am Sana
+```
