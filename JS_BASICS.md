@@ -694,7 +694,7 @@ Functions are first class objects. It means they can be stored in a variable (ex
 - When a function is accepting another function as argument or returns another functions as a result , it is called `higher order function`.
 - The function that we pass it to other function as argument is called `callback function`.
 ```
-//morning and afternoon are callback functions as they are passed to other function as argument:
+//morning and afternoon are callback functions as they are passed to another function as arguments:
 
 function morning(name){
   return `Good Morning ${name.toUpperCase()}!!!!`;
@@ -704,15 +704,278 @@ function afternoon(name){
   return `Good Afternoon ${name.repeat(4)}!!!` //repeating a text 4 times
 }
 
+//greet is higher order function which accepts another function as argument :
+
 function greet(name, callback){
   let myName = "Sana";
   console.log(`${callback(name)}, I am ${myName}`);
 }
 
-//greet is higher order function which accepts another function as argument :
+
+//here we should never envoke the callback function using ():
 
 greet("Umo",morning); //Good Morning UMO!!!!, I am Sana
 
-//here we should never envoke the callback function using ():
 greet("Maro",afternoon); //Good Afternoon MaroMaroMaroMaro!!!, I am Sana
+```
+
+
+# Array Iterators :
+Array iterators are methods that allow you to traverse and perform operations on each element of an array without using the for loop.
+They accept a callback function as an argument and call that callback against each item in the array.
+
+- **forEach :**
+Executes a provided function once for each array element. It does not return a new array.
+```
+const numbers = [1, 2, 3];
+
+// The callback function can be created outside and then passed to the forEach:
+
+function showNumbers (num){
+  console.log(num)
+}
+numbers.forEach(showNumbers); //we should not invoke the functions here.
+
+
+
+// We can have anonymos function directly inside the forEach:
+
+numbers.forEach(function(num){
+  console.log(num)
+})
+
+// We can use arrow functions inside the forEach :
+
+numbers.forEach((num) => console.log(num));
+```
+
+- **map :**
+ Creates a new array with the results of calling a provided function on every element in the array. It is not chaging the size of the original array.
+ ```
+const people = [
+  {name:"bob", age:20, position:"Developer"},
+  {name:"peter", age:25, position:"Designer"},
+  {name:"Susy", age:30, position:"Boss"},
+  {name:"Kene", age:16, position:"Student"}
+]
+
+const ages = people.map(function(item){
+  return item.age
+})
+console.log(ages);
+
+const names = people.map(function(item){
+  return `<h1>${item.name}</h1>`;
+})
+document.body.innerHTML = names.join('***'); // join the array items using something
+ ```
+
+```
+const students = [
+  {name:"Sana",},
+  {name:"Safa"},
+  {name:"Umrah"}
+];
+
+const updatedStudents = students.map(function(student){
+
+// Way 1 :
+  return {...student, role:"student"}
+
+// Way 2 :
+  student.role = 'student';
+  return student; //return should be in the new line otherwise the result will be different
+});
+
+console.log(updatedStudents);//[
+                            //   { name: 'Sana', role: 'student' },
+                            //   { name: 'Safa', role: 'student' },
+                            //   { name: 'Umrah', role: 'student' }
+                            // ]
+```
+
+- **filter :**
+Returns a new array and can manipulate the size of the new array. It returns the items of the array based on a condition.
+```
+const people = [
+  {name:"bob", age:20, position:"Developer"},
+  {name:"peter", age:25, position:"Designer"},
+  {name:"Susy", age:30, position:"Boss"},
+  {name:"Kene", age:16, position:"Student"}
+]
+
+const youngPeople = people.filter(function(person){
+  return person.age <= 25
+})
+
+const develpers = people.filter(function(person){
+  return person.position === 'Developer'
+})
+
+console.log(youngPeople);
+console.log(develpers);
+```
+
+- **find :**
+Returns a single instance of the array based on a condition. It Returns the first match and if no match was found it return `undefined`. It is great for getting a unique value.
+```
+const people = [
+  {name:"bob", age:20, position:"Developer", id:1},
+  {name:"peter", age:25, position:"Designer", id:3},
+  {name:"Susy", age:30, position:"Boss", id:3},
+  {name:"Kene", age:16, position:"Student", id:4}
+]
+
+const person = people.find(function(person){
+  return person.id === 3;
+})
+
+const sana = people.find(function(person){
+  person.name === "Sana";
+})
+
+console.log(person); //{ name: 'peter', age: 25, position: 'Designer', id: 3 }
+console.log(sana); //undefined
+```
+
+- **Reduce :**
+Iterates over array , uses callback function. It Reduces to a single value, number , array , object. It takes two parameters :
+  - parameter 1 : total of calculations or called accumulator
+  - parameter 2 : current iteration value
+```
+const people = [
+  {name:"bob", age:20, position:"Developer", salaray:400},
+  {name:"peter", age:25, position:"Designer", salaray:500},
+  {name:"Susy", age:30, position:"Boss", salaray:1000}
+]
+
+const total = people.reduce(function(accumulator,currentItem){
+  console.log(`Total money : ${accumulator}`)
+  console.log(`Current Salary : ${currentItem.salaray}`)
+  accumulator+= currentItem.salaray;
+  return accumulator; //always return accumulator
+},0); //0 is an initial value for accumulator
+
+console.log(total); //Total money : 0
+                    // Current Salary : 400
+                    // Total money : 400
+                    // Current Salary : 500
+                    // Total money : 900
+                    // Current Salary : 1000
+                    // 1900
+```
+```
+const students = [
+  {id:1,name:"Sana",score:80,favSubject:"Math"},
+  {id:2,name:"Safa",score:100,favSubject:"Physics"},
+  {id:3,name:"Umrah",score:59,favSubject:"Biology"},
+  {id:4,name:"Marwa",score:100,favSubject:"Biology"},
+  {id:5,name:"Sara",score:85,favSubject:"Math"},
+  {id:6,name:"Nilofar",score:70,favSubject:"Computer"},
+];
+
+let survey = students.reduce((subjects, student)=>{
+  let subject = student.favSubject;
+  subjects[subject] ? subjects[subject]+= 1 : subjects[subject] = 1; //dynamically adding items using [] bracket notation
+  return subjects;
+},{});//Anything we anna return we can give that value to the parameter of accumulator.
+
+console.log(survey); //{ Math: 2, Physics: 1, Biology: 2, Computer: 1 }
+```
+
+# Differences between find and filter :
+`filter` returns an array but `find` return just a single item of the array. `find` is returning just the first match of the condition while `filter` is returning all the items that matches the condition.
+```
+const people = [
+  {name:"bob", age:20, position:"Developer", id:1},
+  {name:"peter", age:25, position:"Designer", id:3},
+  {name:"Susy", age:30, position:"Boss", id:3},
+  {name:"Susy", age:25, position:"Designer", id:4},
+  {name:"John", age:18, position:"Designer", id:5},
+  {name:"Kene", age:16, position:"Student", id:4}
+]
+
+const susy = people.find(function(person){
+  return person.name === "Susy";
+});
+console.log(susy); //{ name: 'Susy', age: 30, position: 'Boss', id: 3 }
+
+const susy2 = people.filter(function(person){
+  return person.name === "Susy";
+});
+console.log(susy2); //[
+//   { name: 'Susy', age: 30, position: 'Boss', id: 3 },
+//   { name: 'Susy', age: 25, position: 'Designer', id: 4 }
+// ]
+```
+
+
+# Math Object :
+In JavaScript, the Math object is a built-in object that provides a set of mathematical functions and constants. It's a static object, meaning you don't need to create an instance of Math to use its properties and methods. Instead, you can call them directly from the Math object itself.
+```
+const number = 3.897343
+let result = Math.floor(number) //round down the number
+
+const number = 3.197343
+result = Math.ceil(number); //round up the number
+
+const number = 49
+result = Math.sqrt(number); //square root
+
+const number = 49
+result = Math.PI; //PI
+
+const number = 49
+result = Math.min(30,56,12,3); //minimum number
+
+const number = 49
+result = Math.max(30,56,12,3); //maximum number
+
+result = Math.random(); //random is always from 0 to 0.9999999999999
+result = Math.random() * 10; //from 1 to 9
+result = Math.ceil(Math.random() * 10); //from 1 to 10
+
+console.log(result);
+```
+
+# Date Object :
+
+```
+const date = new Date();
+
+const month = date.getMonth(); //Array is 0 index based that is why January is 0.
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December"
+];
+console.log(months[month]); //current month
+
+const daysOfWeek = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday"
+];
+const day = date.getDay(); //array is 0 based that is why and Sunday is having 0 index
+console.log(daysOfWeek[day]); //current day of the week
+
+const todayDate = date.getDate(); //The day of the date.
+console.log(todayDate);
+const year = date.getFullYear(); //The year of the date.
+console.log(year);
+
+const date2 = new Date('2001/8/11') //Creat our own date by passing value
 ```
