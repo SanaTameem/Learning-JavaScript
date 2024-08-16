@@ -395,3 +395,284 @@ input.addEventListener('keydown', function(){
 })
 
 ```
+
+# Event Object :
+It contains information about the event that occurred and provides methods to control the event's behavior.
+It is giving us all the info about the triggered object.
+
+### Properties and methods of the Event Object:
+- **type:** The type of the event (e.g., "click", "keydown", "submit").
+```
+const heading = document.querySelector('.heading');
+
+heading.addEventListener('click', (eve)=>{
+  console.log(eve.type) //click
+});
+```
+
+- **currentTarget:** The element that the event is attached to that.
+```
+const input = document.querySelector('#input');
+
+input.addEventListener('keydown', function(e){
+  console.log(e.currentTarget); //e.currentTarget will be input
+});
+```
+
+- **target:** The element that triggered the event. This is the actual element that was clicked, typed on, or otherwise interacted with by the user.
+```
+const heading = document.querySelector('.heading');
+
+heading.addEventListener('click', (eve)=>{
+  console.log(eve.target);
+});
+```
+
+- **preventDefault() :** Prevents the default action associated with the event (e.g., preventing form submission or following a link).
+```
+const link = document.querySelector('#link');
+
+link.addEventListener('click', function(e){
+  e.preventDefault();
+});
+```
+
+# `target` vs `currentTarget` :
+`currentTarget` is refering to the element to which the event listener has been attached.
+`target` is refering to the element that the event happens on it.
+```
+html:
+<button id="outerButton">
+  Outer Button
+  <strong id="innerButton">
+    Nested Text
+  </strong>
+</button>
+
+
+js:
+const outerButton = document.querySelector('#outerButton');
+
+outerButton.addEventListener('click', function(e){
+  console.log('Target : ', e.target);
+  console.log('Current Target : ', e.currentTarget);
+});
+```
+
+
+# Using this keyword in Event Object :
+Whe can select an element by this keyword as well. If we used an arrow function this will return window obj but if we used function expression it will return the element which has the eventListener.
+```
+const heading = document.querySelector('.heading');
+
+heading.addEventListener('click', function(){
+  console.log(this); // returning heading
+})
+```
+
+
+# Event Propagation
+In JavaScript, when an event occurs (like a click or a keypress), it doesn't just affect the element that directly receives the event. Instead, the event propagates through a hierarchy of elements. This is known as event propagation, and it happens in two phases:
+
+- Capturing Phase: The event starts from the top of the document and travels down to the target element. This is the "capture" phase.
+```
+html:
+<div class="container">
+    <ul class="list">
+        <li class="item"><a href="#">Link</a></li>
+        <li class="item"><a href="#">Link</a></li>
+    </ul>
+</div>
+
+
+
+js:
+const list = document.querySelector('.list');
+const container = document.querySelector('.container');
+
+window.addEventListener('click', (e) => {
+  console.log("Target : ", e.target);
+  console.log("Current Target : ", e.currentTarget);
+}, { capture: true }); // Capturing phase
+
+document.addEventListener('click', (e) => {
+  console.log("Target : ", e.target);
+  console.log("Current Target : ", e.currentTarget);
+}, { capture: true }); // Capturing phase
+
+container.addEventListener('click', (e) => {
+  console.log("Target : ", e.target);
+  console.log("Current Target : ", e.currentTarget);
+}, { capture: true }); // Capturing phase
+
+list.addEventListener('click', (e) => {
+  console.log("Target : ", e.target);
+  console.log("Current Target : ", e.currentTarget);
+}, { capture: true }); // Capturing phase
+
+
+
+output:
+Target : <a>
+Current Target : window
+
+Target : <a>
+Current Target : document
+
+Target : <a>
+Current Target : .container
+
+Target : <a>
+Current Target : .list
+```
+
+
+- Bubbling Phase: After reaching the target element, the event bubbles back up to the top, passing through each parent element. This is the "bubble" phase.
+```
+html:
+  <div class="container">
+    <ul class="list">
+      <li class="item"><a href="#">Link</a></li>
+      <li class="item"><a href="#">Link</a></li>
+    </ul>
+  </div>
+
+
+js:
+const list = document.querySelector('.list');
+const container = document.querySelector('.container');
+
+list.addEventListener('click', (e) => {
+  console.log("Target : ", e.target);
+  console.log("Current Target : ", e.currentTarget);
+});
+
+container.addEventListener('click', (e) => {
+  console.log("Target : ", e.target);
+  console.log("Current Target : ", e.currentTarget);
+});
+
+document.addEventListener('click', (e) => {
+  console.log("Target : ", e.target);
+  console.log("Current Target : ", e.currentTarget);
+});
+
+window.addEventListener('click', (e) => {
+  console.log("Target : ", e.target);
+  console.log("Current Target : ", e.currentTarget);
+});
+
+
+
+output:
+Target : <a>
+Current Target : .list
+
+Target : <a>
+Current Target : .container
+
+Target : <a>
+Current Target : document
+
+Target : <a>
+Current Target : window
+```
+
+**note :** We can stop the propagation using `e.stopPropagation()`.
+
+```
+const list = document.querySelector('.list');
+const container = document.querySelector('.container');
+list.addEventListener('click', (e)=>{
+  console.log("Target : ",e.target);
+  console.log("Current Target : ",e.currentTarget);
+});
+
+container.addEventListener('click', (e)=>{
+  console.log("Target : ",e.target);
+  console.log("Current Target : ",e.currentTarget);
+  e.stopPropagation(); //e.stopPropagation() prevents any further bubbling past the container, so no further logs appear from document or window in the bubbling phase.
+});
+
+document.addEventListener('click', (e)=>{
+  console.log("Target : ",e.target);
+  console.log("Current Target : ",e.currentTarget);
+});
+
+window.addEventListener('click', (e)=>{
+  console.log("Target : ",e.target);
+  console.log("Current Target : ",e.currentTarget);
+});
+
+output:
+Target : <a>
+Current Target : .list
+
+Target : <a>
+Current Target : .container
+```
+
+
+# Propagation Example:
+```
+html:
+  <div class="container">
+    <h1 class="heading">I am inside the container!</h1>
+  </div>
+  <button class="btn">Add Element</button>
+
+js:
+
+If we add h1 in HTML we can acces it in JS:
+const heading = document.querySelector('.heading');
+const container = document.querySelector('.container');
+const btn = document.querySelector('.btn');
+
+
+Event for the heading that is added using html:
+heading.addEventListener('click', function(){
+  console.log("Hello there !!!!!!!!");
+});
+
+
+
+If we remove the h1 from HTML and add h1's using JS it is showing error because we can't access dynamic element using querySelector.
+btn.addEventListener('click', function(){
+  const element = document.createElement('h1');
+  element.classList.add('heading');
+  element.textContent = `I am inside the container!`;
+  container.appendChild(element);
+});
+
+
+That is why we have to add the event listener to the parent of h1's so using bubbling by clicking on h1's the event of their parents will fire up.
+container.addEventListener('click', function(e){
+  if(e.target.classList.contains('heading')){
+    console.log("Hello there !!!!!!!!")
+  }
+});
+```
+
+# Form Events (submit)
+```
+html:
+<form action="" id="form">
+  <input type="text" name="name" id="name">
+  <input type="password" name="password" id="password">
+  <input type="submit" value="submit" id="submit">
+</form>
+
+
+js:
+const form = document.querySelector('#form');
+const name = document.querySelector('#name');
+const password = document.querySelector('#password');
+
+form.addEventListener('submit', function(e){
+  e.preventDefault();
+  console.log("Form submitted!!!!");
+  console.log(name.value);
+  console.log(password.value);
+});
+```
+
