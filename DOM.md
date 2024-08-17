@@ -676,3 +676,93 @@ form.addEventListener('submit', function(e){
 });
 ```
 
+# Web Storage API (Local Storage and Session Storage)
+- **Local Storage :** Data stored in local storage persists across browser sessions. This means that the data will remain even if the browser is closed and reopened. Local storage data is shared across all tabs and windows within the same origin (protocol, domain, and port).
+```
+/ Store data
+localStorage.setItem('username', 'JohnDoe');
+
+// Retrieve data
+const username = localStorage.getItem('username');
+
+// Remove data
+localStorage.removeItem('username');
+
+// Clear all local storage
+localStorage.clear();
+```
+- **Session Storage :** Data stored in session storage is only available for the duration of the page session. A page session lasts as long as the browser is open, and survives page reloads and restores. However, it is cleared when the page session ends, which usually happens when the browser or tab is closed. Session storage is limited to the specific tab or window. Data stored in session storage is not shared between tabs or windows, even if they are for the same origin.
+```
+// Store data
+sessionStorage.setItem('sessionKey', 'sessionValue');
+
+// Retrieve data
+const sessionValue = sessionStorage.getItem('sessionKey');
+
+// Remove data
+sessionStorage.removeItem('sessionKey');
+
+// Clear all session storage
+sessionStorage.clear();
+```
+
+# Storing multiple values in local Storage:
+- Convert the Array or Object to a JSON String: Use `JSON.stringify()`
+- Convert the String Back to an Array or Object: Use `JSON.parse()`
+```
+const fruits = ['Apple', "Peach", "Mango"];
+localStorage.setItem('fruits', JSON.stringify(fruits));
+console.log(JSON.parse(localStorage.getItem('fruits'))[0]);
+```
+
+# `setTimeout()`:
+It runs a function once after a specific time.
+
+**Syntax of setTimeout :**
+setTimeout(function, delay, arg1, arg2, ...);
+- function: The function to execute after the delay.
+- delay: The time (in milliseconds) to wait before executing the function.
+- arg1, arg2, ... (optional): Additional arguments to pass to the function when it executes.
+
+```
+Example Without Arguments:
+
+// Function to be executed
+function greet() {
+    console.log('Hello after 2 seconds!');
+}
+
+// Set the timeout
+const timeoutId = setTimeout(greet, 2000); //function reference no invoking.
+```
+```
+Example With Arguments:
+// Function to be executed with arguments
+function greet(name, age) {
+    console.log(`Hello ${name}, you are ${age} years old.`);
+}
+
+// Set the timeout with arguments
+const timeoutId = setTimeout(greet, 2000, 'Alice', 30);
+```
+
+### Clearing the Timeout :
+You can use clearTimeout to cancel a timeout that has been set but not yet executed.
+
+### `setTimeout()` unique identifier:
+In js setTimeout returns a unique identifier which is a value that you can use to manage the timeout. This identifier is crucial for canceling the timeout before it executes, if necessary.
+
+```
+// Function to be executed
+function greet() {
+    console.log('This will not be shown.');
+}
+
+// Set the timeout and get the timeout ID
+const timeoutId = setTimeout(greet, 2000);
+
+// Clear the timeout before it executes
+clearTimeout(timeoutId);
+```
+
+
