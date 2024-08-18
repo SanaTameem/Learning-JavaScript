@@ -719,7 +719,9 @@ console.log(JSON.parse(localStorage.getItem('fruits'))[0]);
 It runs a function once after a specific time.
 
 **Syntax of setTimeout :**
+```
 setTimeout(function, delay, arg1, arg2, ...);
+```
 - function: The function to execute after the delay.
 - delay: The time (in milliseconds) to wait before executing the function.
 - arg1, arg2, ... (optional): Additional arguments to pass to the function when it executes.
@@ -765,4 +767,137 @@ const timeoutId = setTimeout(greet, 2000);
 clearTimeout(timeoutId);
 ```
 
+# `setInterval()` :
+setInterval in JavaScript is a function used to repeatedly execute a given function at specified intervals.
 
+**Syntax of setInterval:**
+```
+setInterval(function, interval, arg1, arg2, ...);
+```
+
+```
+Example without argument:
+
+// Function to be executed
+function logMessage() {
+    console.log('This message is logged every second.');
+}
+
+// Set the interval to call `logMessage` every 1000 milliseconds (1 second)
+const intervalId = setInterval(logMessage, 1000);
+
+
+Example with argument:
+// Function to be executed with arguments
+function greet(name, time) {
+    console.log(`Hello ${name}, it's ${time} now.`);
+}
+
+// Set the interval to call `greet` every 2000 milliseconds (2 seconds)
+const intervalId = setInterval(greet, 2000, 'Alice', new Date().toLocaleTimeString());
+```
+
+# Clearing the Interval:
+To stop the repeated execution, use `clearInterval` with the unique identifier returned by `setInterval`.
+```
+function greet(name, time) {
+    console.log(`Hello ${name}, it's ${time} now.`);
+}
+
+const intervalId = setInterval(greet, 2000, 'Alice', new Date().toLocaleTimeString());
+
+clearInterval(intervalId);
+```
+
+# DOMContentLoaded :
+The DOMContentLoaded event in JavaScript is an important event that indicates when the initial HTML document has been completely loaded and parsed, without waiting for stylesheets, images, and subframes to finish loading. This event is useful when you want to execute JavaScript code as soon as the DOM (Document Object Model) is ready, but before the whole page (including images and stylesheets) has finished loading.
+```
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('The DOM is fully loaded and parsed.');
+});
+```
+
+# `DOMContentLoaded` Vs `window.onload`
+- `DOMContentLoaded`: Fires when the DOM is fully loaded and parsed.
+- `load`: Fires when a resource and its dependent resources have been fully loaded. This can include the entire page with all its assets (images, stylesheets, scripts, etc.), or it can apply to individual resources.
+```
+// Example using load event
+window.addEventListener('load', function() {
+    console.log('The entire page, including all resources, is fully loaded.');
+});
+```
+
+# `scroll` Event:
+The scroll event in JavaScript is triggered when an element or the entire window is scrolled. 
+- scrollY: This property returns the number of pixels that the document has already been scrolled vertically from the top.
+- scrollX: This property returns the number of pixels that the document has already been scrolled horizontally from the left.
+
+Syntax:
+```
+element.addEventListener('scroll', function(event) {
+    // Code to run when the element is scrolled
+});
+```
+
+Scrolling the Window :
+```
+window.addEventListener('scroll', function() {
+    console.log('The window is scrolled.');
+    console.log('Scroll position:', window.scrollY); // Vertical scroll position
+});
+```
+
+# `window.innerHeight` :
+Returns the height of the viewport (the visible part of the browser window) in pixels.
+```
+console.log('Viewport height:', window.innerHeight);
+```
+
+# `window.innerWidth` :
+Returns the width of the viewport in pixels.
+```
+console.log('Viewport width:', window.innerWidth);
+```
+
+# `getBoundingClientRect()` :
+A method of an HTML element that returns a DOMRect object providing information about the size and position of the element relative to the viewport. It includes properties like top, right, bottom, left, width, and height.
+```
+css:
+<style>
+  #myElement {
+      width: 200px;
+      height: 100px;
+      background-color: lightblue;
+      margin-top: 500px; /* To demonstrate scrolling */
+  }
+</style>
+
+html:
+<div id="myElement">
+  Hello, I'm an element!
+</div>
+
+js:
+function logElementRect() {
+          const rect = element.getBoundingClientRect();
+          console.log('Element position and size:', rect);
+          console.log('Top:', rect.top);
+          console.log('Right:', rect.right);
+          console.log('Bottom:', rect.bottom);
+          console.log('Left:', rect.left);
+          console.log('Width:', rect.width);
+          console.log('Height:', rect.height);
+      }
+
+logElementRect();
+```
+
+# `resize` Event:
+The resize event in JavaScript is triggered when the size of the viewport or an element is changed. 
+```
+window.addEventListener('resize', function() {
+    console.log('Window resized.');
+    console.log('New viewport width:', window.innerWidth);
+    console.log('New viewport height:', window.innerHeight);
+});
+```
